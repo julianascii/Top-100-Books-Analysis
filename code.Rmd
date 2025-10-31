@@ -19,3 +19,45 @@ books <- read_csv("top_100_books.csv")
 glimpse(books)
 head(books)
 ```
+
+```{r}
+# basic summaries
+summary(books)
+mean(books$Ages, na.rm = TRUE)
+sd(books$Ages, na.rm = TRUE)
+range(books$Year)
+
+# rename first column (optional)
+books <- books %>%
+  rename(Rank = "...1")
+
+# check if max year can be examined & find year with most books publlished
+table(duplicated(books$Year))
+
+yr <- books %>%
+  group_by(Year) %>%
+  summarize(count = n()) %>%
+  filter(count == max(count))
+yr
+
+# identify which books these are (optional)
+bk <- books %>%
+  group_by(Year, 
+           Author, 
+           Title) %>%
+  filter(Year == 1925 |
+         Year == 1967) %>%
+  arrange(Year)
+bk
+
+# identify at what age on average these books were published
+bk_age <- bk %>%
+  summarize(mean(Ages), na.rm = TRUE)
+print(paste("The top 100 books were published at age", format(top_20_avg_age, digits = 2), "on average."))
+
+# identify at what age the top 20 books were published (addtl)
+bk_top_20 <- books %>%
+  filter(Rank < 20)
+top_20_avg_age <- mean(bk_top_20$Ages, na.rm = TRUE)
+print(paste("The top 20 books were published at age", format(top_20_avg_age, digits = 2), "on average."))
+```
