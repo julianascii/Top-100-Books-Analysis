@@ -61,3 +61,59 @@ bk_top_20 <- books %>%
 top_20_avg_age <- mean(bk_top_20$Ages, na.rm = TRUE)
 print(paste("The top 20 books were published at age", format(top_20_avg_age, digits = 2), "on average."))
 ```
+
+```{r}
+# language distribution analysis
+table(books$Language)
+
+# vizualized version
+viz <- ggplot(books, aes(x = Language)) +
+  geom_bar(color = "pink", width = 0.7, fill = "pink") +
+  geom_text(
+    stat = "count",
+    aes(label = after_stat(count)),
+    position = position_stack(vjust = 0.5),
+    size = 3,
+    color = "black"
+  ) +
+  coord_flip() +
+  labs(
+    x = "Language",
+    y = "Number of Books",
+    title = "Top 100 Books",
+    subtitle = "Language Distribution"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", size = 15),
+    plot.subtitle = element_text(size = 12, color = "gray40"),
+    axis.text.y = element_text(face = "bold")
+  )
+viz
+```
+```{r}
+# try a histogram for author's ages w measures of central tendences median and mean
+hist <- qplot(books$Ages,
+      geom='histogram',
+      binwidth = 3,  
+      main = 'Age of Top 100 Novel Authors at Publication', 
+      xlab = 'Publication Age',
+      ylab = 'Count',
+      fill=I("blue"), 
+      col=I("red"), 
+      alpha=I(.2)
+    ) +
+  geom_vline(aes(xintercept=median(books$Ages),
+                 color="median"), 
+                 linetype="dashed",
+                 size=1
+    ) +
+  geom_vline(aes(xintercept=mean(books$Ages),
+                 color="mean"), 
+                 linetype="solid",
+                 size=1
+    ) +
+  scale_color_manual(name = "statistics", values = c(median = "blue", mean = "red")
+    )
+hist
+```
