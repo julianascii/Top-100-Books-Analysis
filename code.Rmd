@@ -1,0 +1,21 @@
+---
+title: "Top 100 Books - Analysis"
+author: "Juliana Sophia Pabonita"
+output: html_document
+---
+
+```{r message = FALSE, warning = FALSE}
+# load packages
+library(dplyr)
+library(readr)
+library(ggplot2)
+```
+
+```{r}
+# read csv files
+books <- read_csv("top_100_books.csv")
+
+# intial inspection of the data frame
+glimpse(books)
+head(books)
+```
